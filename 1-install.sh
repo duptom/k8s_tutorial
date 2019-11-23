@@ -50,6 +50,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 systemctl daemon-reload
 systemctl restart kubelet
 
+
 ##-------------------------------------------------
 ## Démarrer kubeadm avec la configuration de Cilium
 ##-------------------------------------------------
