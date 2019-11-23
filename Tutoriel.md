@@ -7,7 +7,7 @@ Le tutoriel a été effectué sur des VM Hyper-V sur lesquelles Ubuntu 18.04 Ser
 À des fins de références, il est possible de consulter le [glossaire de Kubernetes](https://kubernetes.io/docs/reference/glossary/?fundamental=true).
 
 ## [**Cluster, Pod**] Lancer le premier script d'installation
-	wget -O - https://raw.githubusercontent.com/duptom/k8s_tutorial/master/new_install.sh | sudo bash
+	wget -O - https://raw.githubusercontent.com/duptom/k8s_tutorial/master/1-install.sh | sudo bash
 
 ## [**Cluster, Pod**] Ajouter l'accès à l'utilisateur à microk8s
 	sudo usermod -a -G microk8s <utilisateur_actuel>
