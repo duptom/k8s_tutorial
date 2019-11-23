@@ -32,6 +32,11 @@ Utiliser la commande spécifiée plus haut dans le résultat de la commande «*m
 
 	microk8s.join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
 
+# Configurer un déploiement dans Kubernetes
+	microk8s.kubectl apply -f <emplacement_fichier_configuration>
+
+# Supprimer un déploiement
+	microk8s.kubectl delete -n default deployment <nom_du_deploiement>
 
 # *Commandes supplémentaires*
 ## Afficher le status de microk8s:
@@ -39,5 +44,10 @@ Utiliser la commande spécifiée plus haut dans le résultat de la commande «*m
 
 ## Lancer le dashboard (si besoin):
 Ajouter un '&' à la fin de la commande pour lancer le dashboard en arrière-plan.
+On peut seulement se connecter sur le dashboard web sur l'ordinateur local.
 
-	microk8s.kubectl proxy --accept-hosts=.* --address=0.0.0.0
+	microk8s.kubectl proxy
+
+Lien pour accéder au dashboard local:
+
+	http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
