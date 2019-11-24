@@ -6,11 +6,21 @@ Le tutoriel a été effectué sur des VM Hyper-V sur lesquelles Ubuntu 18.04 Ser
 
 À des fins de références, il est possible de consulter le [glossaire de Kubernetes](https://kubernetes.io/docs/reference/glossary/?fundamental=true).
 
+## Activer la virtualisation sur une VM Hyper_V
+Si vous utilisez Hyper-V et que la virtualisation n'est pas activée sur votre VM, vous pouvez effectuer la commande suivante sur la VM fermée:
+
+```PowerShell
+Set-VMProcessor -VMName <NomDeLaVM> -ExposeVirtualizationExtensions $true
+```
+
 ## [**Cluster, Pod**] Lancer le premier script d'installation
 	wget -O - https://raw.githubusercontent.com/duptom/k8s_tutorial/master/1-install.sh | sudo bash
 
-## [**Cluster, Pod**] Ajouter l'accès à l'utilisateur à microk8s
+
+
+## [**Cluster, Pod**] Ajouter l'accès à l'utilisateur à microk8s et docker
 	sudo usermod -a -G microk8s <utilisateur_actuel>
+	sudo usermod -aG docker <utilisateur_actuel>
 
 ## **[**Cluster, Pod**]** Redémarrer pour appliquer la sécurité
 	sudo shutdown -r now
