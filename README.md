@@ -8,12 +8,16 @@ Le tutoriel a été effectué sur des VM Hyper-V sur lesquelles Ubuntu 18.04 Ser
 
 Certaines étapes d'installation spécifient s'il faut faire l'action sur le *Cluster* principal et/ou sur les *Nodes*.
 
-## Activer la virtualisation sur une VM Hyper_V
+## Activer la virtualisation sur une VM
+
+### Hyper-V
 Si vous utilisez Hyper-V et que la virtualisation n'est pas activée sur votre VM, vous pouvez effectuer la commande suivante sur la VM fermée:
 
 ```PowerShell
 Set-VMProcessor -VMName <NomDeLaVM> -ExposeVirtualizationExtensions $true
 ```
+### Virtual Box
+Si vous ne pouvez pas activer Hyper-V, vous pouvez utiliser l'hyperviseur [VirtualBox](https://www.virtualbox.org/wiki/Downloads) d'Oracle
 
 ## [**Cluster, Nodes**]
 Mettre à jour le système pour qu'il n'y ait pas de mise à jour en attente:
