@@ -15,14 +15,19 @@ Si vous utilisez Hyper-V et que la virtualisation n'est pas activée sur votre V
 Set-VMProcessor -VMName <NomDeLaVM> -ExposeVirtualizationExtensions $true
 ```
 
+## [**Cluster, Nodes**]
+Mettre à jour le système pour qu'il n'y ait pas de mise à jour en attente:
+	
+	sudo apt upgrade
+
 ## [**Cluster, Nodes**] Installation de microk8s
-Microk8s est une distribution de Kubernetes facile d'utilisation avec tous les outils pré installés et configurés. Pour l'installer, simplement lancer cette commande
+Microk8s est une distribution de Kubernetes facile d'utilisation avec tous les outils pré installés et configurés. Pour l'installer, simplement lancer cette commande (attendre la fin de la commande):
 
 	sudo apt install snapd | sudo snap install microk8s --classic --channel=1.16/stable
-	
-Afficher le status de microk8s suite à l'installation:
 
-	microk8s.status --wait-ready
+Ensuite on doit installer Docker:
+
+	sudo apt install docker.io
 
 Il faut ajouter l'accès à l'utilisateur à microk8s et docker sinon on doit toujours lancer les commande avec *sudo*.
 
@@ -33,7 +38,12 @@ Ensuite, on doit redémarrer pour appliquer la sécurité
 
 	sudo shutdown -r now
 
-## [**Cluster**] Générer la chaîne de connexion pour les pods
+Afficher le status de microk8s et la version de docker suite à l'installation:
+
+	microk8s.status --wait-ready
+	docker -v
+
+## [**Cluster**] Générer la chaîne de connexion pour les *Nodes* (optionnel)
 	microk8s.add-node
 Le résultat de la commande précédente devrait ressembler à cela:
 	
@@ -45,13 +55,13 @@ Le résultat de la commande précédente devrait ressembler à cela:
 	microk8s.join 10.1.84.0:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
 	microk8s.join 10.22.254.77:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
 
-## [**Nodes**] Connecter une node au cluster (optionnel)
+## [**Nodes**] Connecter une *Node* au cluster (optionnel)
 Utiliser la commande spécifiée plus haut dans le résultat de la commande «*microk8s.add-node*». On lance la commande *microk8s.join* pour joindre le cluster.
 
 	microk8s.join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
 
 # Préparer une image Docker
-Pour ce tutoriel, une image docker a déjà été préparée (*duptom44/k8stutorial*), mais si vous voulez essayer, vous pouvez faire votre propre image Docker. 
+Pour ce tutoriel, une image docker a déjà été préparée (*duptom44/k8stuto*), mais si vous voulez essayer, vous pouvez faire votre propre image Docker. 
 
 Premièrement, on crée le fichier *Dockerfile* (il est important d'écrire le nom du fichier avec une majuscule) qui contiendra les information pour la préparation de l'image:
 	
@@ -100,29 +110,33 @@ Si on veut publier une autre image (ou une nouvelle version de l'image), on modi
 # Configurer un déploiement dans Kubernetes
 Une fois que l'image Docker est disponible, on peut créer le déploiement avec cette image Docker dans Kubernetes:
 
-	microk8s.kubectl create deployment k8stutorial --image=docker.io/duptom44/k8stutorial:v1
+	microk8s.kubectl create deployment k8stuto --image=docker.io/duptom44/k8stuto:v1
 
-Une fois le déploiement créé, il est automatiquement lancé. Par contre, on doit demander à exposer les ports de la Pod:
+Une fois le déploiement créé, il est automatiquement lancé. Par contre, on doit demander à exposer les ports de la *Pod*:
 
-	microk8s.kubectl create service nodeport k8stutorial --tcp=80:80
+	microk8s.kubectl create service nodeport k8stuto --tcp=80:80
 
-Alors que le service est en cours de fonctionnement, si on veut publier la dernière version sans interruption de service, on effectue seulement un changement d'image et Kubernetes s'occupe du reste:
-
-	microk8s.kubectl set image deployments/k8stutorial k8stutorial=docker.io/duptom44/k8stutorial:v2
-
-Pour pouvoir questionner le serveur web pour lequel on a exposé le port, on doit demander à Kubernetes quel port a été exposé:
+Pour pouvoir questionner le serveur web pour lequel on a exposé le port, on doit demander à Kubernetes quel port a été exposé (on prend le port après le port 80 sur le service *NodePort* qu'on vient de créer):
 
 	microk8s.kubectl get service
 
-Si vous obtenez une erreur *403 Forbidden*, il faut exécuter la commande suivante sur la pod:
+Pour ouvrir notre page web, on navigue sur le lien suivant:
+
+	http://<adresse_ip_serveur>:<port_exposé>
+
+Si vous obtenez une erreur *403 Forbidden*, il faut exécuter la commande suivante sur la *Pod* (pour obtenir le nom de la *pod*, faire la commande *microk8s.kubectl get pods*):
 
 	microk8s.kubectl exec <nom_de_la_pod> chmod +rwx /usr/share/nginx/html/index.html
 
+Alors que le service est en cours de fonctionnement, si on veut publier la dernière version sans interruption de service, on effectue seulement un changement d'image et Kubernetes s'occupe du reste:
+
+	microk8s.kubectl set image deployments/k8stuto k8stuto=docker.io/duptom44/k8stuto:v2
+
 La puissance de Kubernetes réside dans les conteneurs et il est en mesure d'ajuster dynamiquement le nombre de conteneurs:
 
-	microk8s.kubectl scale deployments/k8stutorial --replicas=10
+	microk8s.kubectl scale deployments/k8stuto --replicas=10
 
- 	microk8s.kubectl autoscale deployments/k8stutorial --min=10 --max=15 --cpu-percent=80
+ 	microk8s.kubectl autoscale deployments/k8stuto --min=5 --max=15 --cpu-percent=80
 
 # *Commandes supplémentaires*
 ## Afficher le status de microk8s:
@@ -132,15 +146,16 @@ La puissance de Kubernetes réside dans les conteneurs et il est en mesure d'aju
 Ajouter un '&' à la fin de la commande pour lancer le dashboard en arrière-plan.
 On peut seulement se connecter sur le dashboard web sur l'ordinateur local.
 
+	microk8s.enable dashboard
 	microk8s.kubectl proxy
 
 [Lien pour accéder au dashboard local](http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/)
 
-## Exécuter une commande sur une pod
+## Exécuter une commande sur une *Pod*
 	microk8s.kubectl exec <nom_de_la_pod>
 
 ## Obtenir les déploiements dans Kubernetes
 	microk8s.kubectl get deployments
 	
-## Obtenir les pods actives dans Kubernetes
+## Obtenir les *Pods* actives dans Kubernetes
 	microk8s.kubectl get pods
