@@ -9,6 +9,19 @@ La conteneurisation, elle, est un type de virtualisation, mais beaucoup plus lé
 
 ![Kubernetes et Docker](https://i1.wp.com/www.docker.com/blog/wp-content/uploads/2019/10/Docker-Kubernetes-together.png?resize=1110%2C624&ssl=1)
 
+# Les bases de Kubernetes
+La compostition d'un cluster K8s:
+
+![Un cluster K8s](https://d33wubrfki0l68.cloudfront.net/152c845f25df8e69dd24dd7b0836a289747e258a/4a1d2/docs/tutorials/kubernetes-basics/public/images/module_02_first_app.svg)
+
+Une *Node* d'un cluster K8s (un cluster peut contenir de une à plusieurs *nodes*: ce sont en fait les différents ordinateurs qui sont joints ensemble pour l'orchestration des conteneurs):
+
+![Une node K8s](https://d33wubrfki0l68.cloudfront.net/5cb72d407cbe2755e581b6de757e0d81760d5b86/a9df9/docs/tutorials/kubernetes-basics/public/images/module_03_nodes.svg)
+
+Les *Pods* sont les unités les plus petites de K8s. Ce sont les conteneurs qui contiennent l'image *Docker*. Il peut y avoir plusieurs *Pods* pour un déploiement tout dépendant de la configuration de déploiement.
+
+![Des pods K8s](https://d33wubrfki0l68.cloudfront.net/fe03f68d8ede9815184852ca2a4fd30325e5d15a/98064/docs/tutorials/kubernetes-basics/public/images/module_03_pods.svg)
+
 # Tutoriel d'installation de *Kubernetes* (K8s)
 Le but de ce tutoriel est de procéder à l'installation de *Kubernetes* et de *Docker* et d'être en mesure de déployer des applications à travers l'architecture de ces deux logiciels. Après le tutoriel, vous serez donc en mesure de préparer vous-même votre propre image *Docker* et de la déployer via *Kubernetes* afin d'avoir la meilleure gestion de charge de travail qui existe sur le marché. Vous aurez à votre disposition toutes les commandes essentielles pour visualiser et gérer de manière simple vos déploiements.
 
