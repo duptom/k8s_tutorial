@@ -3,7 +3,7 @@
 # Présentation de *Kubernetes* (K8s)
 *Kubernetes* est un logiciel permettant l'orchestration complète de conteneurs. Grâce à *Kubernetes*, il est facile d'augmenter la puissance qu'on veut occtroyer à nos différentes applications: il suffit de demander à ce que *Kubernetes* ajouter plus de conteneurs de cette application (par exemple).
 
-La conteneurisation, elle, est un type de virtualisation, mais beaucoup plus légèrte qu'une virtualisation comprennant un système d'exploitation complet. On pourrait plutôt appeler la conteneurisation comme l'isolement de l'exécution de nos applications. Cette capacité de conteneurisation nous est apportée par *Docker*
+La conteneurisation, elle, est un type de virtualisation, mais beaucoup plus légèrte qu'une virtualisation comprennant un système d'exploitation complet. On pourrait plutôt appeler la conteneurisation comme l'isolement de l'exécution de nos applications. Cette capacité de conteneurisation nous est apportée par *Docker*.
 
 ## *Docker* et *Kubernetes*
 
