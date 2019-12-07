@@ -65,6 +65,10 @@ Ensuite, on doit redémarrer pour appliquer la sécurité
 
 	sudo shutdown -r now
 
+Si ce n'est pas déjà fait, on démarre *microk8s*:
+
+	microk8s.start
+
 Afficher le status de microk8s et la version de *Docker* suite à l'installation:
 
 	microk8s.status --wait-ready
